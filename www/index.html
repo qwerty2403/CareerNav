@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CareerNav</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
+:root{--black:#171717;--red:#d21f26;--blue:#3987d8;--gray:#888;--line:#d8d8d8;--bg:#fff}
+*{box-sizing:border-box}body{margin:0;background:#e9e9e9;color:var(--black);font-family:'Noto Sans KR',sans-serif}
+button,input,textarea,select{font:inherit}button{cursor:pointer}
+.phone{width:min(100%,430px);min-height:100vh;margin:auto;background:#fff;position:relative;border-left:2px solid #111;border-right:2px solid #111;padding-bottom:66px}
+.topbar{height:49px;border-bottom:1px solid #222;display:flex;align-items:center;justify-content:space-between;padding:0 12px;background:#fff;position:sticky;top:0;z-index:9}
+.logo{font-weight:900;font-size:17px;color:#314c8d}.logo small{font-size:9px;display:block;color:#777;font-weight:400;letter-spacing:0}
+.back{border:0;background:none;color:var(--red);font-size:27px;line-height:1;padding:0 5px}
+.topright{display:flex;gap:10px}.topright button{border:0;background:none;font-size:19px}
+.tabs{height:37px;display:flex;justify-content:space-around;align-items:center;border-bottom:1px solid #aaa;background:#fff;position:sticky;top:49px;z-index:8}
+.tabs button{border:0;background:none;font-size:11px;color:#777;padding:8px 2px;white-space:nowrap}.tabs button.active{font-weight:900;color:#111;border-bottom:2px solid #111}
+main{padding:12px 13px 22px}.screen{display:none}.screen.active{display:block}
+h1{font-size:20px;margin:7px 0 13px;font-weight:700}.hand{font-family:'Nanum Pen Script',cursive;font-size:24px;font-weight:400}
+h2{font-size:15px;margin:15px 0 9px}h3{font-size:13px;margin:0 0 6px}
+p{margin:6px 0}.muted{font-size:10px;color:#777}.tiny{font-size:9px;color:#777}.red{color:var(--red)}.blue{color:var(--blue)}
+.box{border:1.4px solid #222;padding:9px;margin:9px 0;background:#fff}.box.soft{border-color:#aaa}
+.line{height:1px;background:#bbb;margin:8px 0}
+.field{margin:8px 0}.field label{display:block;font-size:10px;margin-bottom:4px}.field input,.field textarea,.field select{width:100%;border:1px solid #222;border-radius:0;padding:8px 7px;font-size:11px;background:white}.field textarea{min-height:65px}
+.btn{border:1px solid #222;background:#fff;padding:7px 10px;font-size:10px;border-radius:0}.btn.black{background:#111;color:#fff}.btn.redline{color:var(--red);border-color:var(--red)}.btn.blue{color:var(--blue);border-color:var(--blue)}.wide{width:100%}
+.row{display:flex;align-items:center;gap:7px}.between{justify-content:space-between}.grow{flex:1;min-width:0}
+.pills{display:flex;flex-wrap:wrap;gap:5px;margin:7px 0}.pill{border:1px solid #555;border-radius:20px;padding:4px 9px;font-size:9px;background:#fff}.pill.on{background:#111;color:#fff}
+.card{border:1px solid #333;padding:8px;margin:8px 0}.cardhead{display:flex;justify-content:space-between;align-items:center;font-size:10px}.jobtitle{font-size:12px;font-weight:700;margin:6px 0}.jobmeta{font-size:9px;color:#777}.heart{border:0;background:none;color:#bbb;font-size:19px;padding:0}.heart.on{color:#e22}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:7px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.bottom{height:57px;position:fixed;bottom:0;width:min(100%,426px);display:flex;justify-content:space-around;align-items:center;border-top:1px solid #aaa;background:#fff;z-index:10}
+.bottom button{border:0;background:none;color:#888;font-size:9px;display:flex;flex-direction:column;align-items:center;gap:2px}.bottom b{font-size:17px}.bottom button.active{color:#111;font-weight:900}
+.avatar{width:38px;height:38px;border:1px solid #222;border-radius:50%;display:grid;place-items:center;font-size:21px}
+.stat{border:1px solid #555;padding:7px;text-align:center;font-size:9px}.stat b{display:block;font-size:17px}
+.notice{border:1px solid var(--red);color:var(--red);padding:7px;font-size:9px;margin:8px 0}
+.listrow{border-bottom:1px solid #bbb;padding:9px 2px;font-size:11px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+.bar{height:6px;background:#eee;margin:5px 0}.bar span{display:block;height:100%;background:#777}
+.thumb{height:82px;border:1px solid #aaa;display:grid;place-items:center;font-size:30px;background:#fafafa}
+.chat{border:1px solid #222;padding:8px;margin:8px 0;max-width:85%;font-size:10px}.chat.me{margin-left:auto;background:#f2f7ff}
+.hidden{display:none!important}
+</style></head>
+<body><div class="phone">
+<header class="topbar"><button class="back" id="backBtn" onclick="back()">‹</button><div class="logo">CareerNav <small>커리어 · 취업 정보 탐색</small></div><div class="topright"><button onclick="show('alerts')">♧</button><button onclick="show('mypage')">♙</button></div></header>
+<nav class="tabs" id="tabs"><button data-page="jobs" class="active">공고 검색</button><button data-page="saved">관심공고</button><button data-page="ai">AI</button><button data-page="companies">기업정보</button><button data-page="mypage">My Page</button></nav>
+<main>
+<section class="screen" id="login">
+<div style="padding:30px 8px 10px"><div class="logo" style="font-size:26px">▰ CareerNav</div><p class="muted">당신의 커리어를 찾아가는 길</p></div>
+<div class="box"><div class="field"><label>아이디</label><input id="loginId" placeholder="아이디를 입력하세요"></div><div class="field"><label>비밀번호</label><input type="password" placeholder="비밀번호를 입력하세요"></div><button class="btn black wide" onclick="show('jobs')">로그인</button><div class="row between" style="margin-top:9px"><span class="tiny">아이디 찾기　 비밀번호 찾기</span><button class="btn" onclick="show('signup')">회원가입</button></div></div>
+<div class="box"><p class="hand" style="text-align:center">간편 로그인</p><div class="row" style="justify-content:space-around;font-size:22px"><button onclick="toast('카카오 로그인은 연동 전입니다.')">🟡</button><button onclick="toast('Google 로그인은 연동 전입니다.')">G</button><button onclick="toast('Naver 로그인은 연동 전입니다.')">🟢</button><button onclick="toast('Apple 로그인은 연동 전입니다.')"></button></div></div>
+</section>
+<section class="screen" id="signup"><h1 class="hand">회원가입</h1><p class="muted">필수 항목을 입력해 주세요. <b class="red">*</b></p>
+<div id="signupFields"></div><div class="field"><label><input type="checkbox"> 이용약관 및 개인정보 처리방침 동의(필수)</label><label><input type="checkbox"> 마케팅 정보 수신 동의(선택)</label></div><button class="btn black wide" onclick="show('welcome')">회원가입</button></section>
+<section class="screen" id="welcome"><h1 class="hand">CareerNav에 오신 것을 환영합니다!</h1><p class="muted">원하는 취업 정보를 선택해 주세요.</p><div class="box"><h2>관심 직무</h2><div class="pills" id="interestJobs"></div><h2>희망 근무 지역</h2><div class="pills" id="regions"></div><h2>희망 고용 형태</h2><div class="pills" id="types"></div><button class="btn black wide" onclick="show('jobs')">설정 완료</button></div></section>
+<section class="screen active" id="jobs"><h1 class="hand">채용 공고</h1><div class="row"><input id="search" class="grow" placeholder="직무, 기업명 검색" style="border:1px solid #222;padding:8px;font-size:10px"><button class="btn" onclick="renderJobs()">⌕</button></div><div class="pills" id="jobFilters"><button class="pill on" onclick="setFilter('전체',this)">전체</button><button class="pill" onclick="setFilter('신입',this)">신입</button><button class="pill" onclick="setFilter('인턴',this)">인턴</button><button class="pill" onclick="setFilter('서울',this)">지역</button><button class="pill" onclick="setFilter('기획',this)">기획</button></div><div class="row between"><span class="muted" id="jobCount">추천 채용공고</span><select id="sort" onchange="renderJobs()" style="font-size:9px;border:0"><option>최신순</option><option>마감순</option></select></div><div id="jobList"></div></section>
+<section class="screen" id="jobdetail"><h1 class="hand">채용 상세</h1><div id="detailContent"></div></section>
+<section class="screen" id="saved"><h1 class="hand">관심 공고</h1><div class="pills"><button class="pill on">전체</button><button class="pill">마감 임박</button></div><div id="savedList"></div></section>
+<section class="screen" id="companies"><h1 class="hand">기업 정보</h1><div class="field"><input id="companySearch" placeholder="기업명을 검색하세요" oninput="renderCompanies()"></div><div id="companyList"></div></section>
+<section class="screen" id="companydetail"><h1 class="hand">기업 상세 정보</h1><div id="companyContent"></div></section>
+<section class="screen" id="ai"><h1 class="hand">AI 직무 분석</h1><div class="box"><p class="muted">나의 관심 분야와 역량을 바탕으로 직무 정보를 확인해 보세요.</p><div class="field"><label>관심 직무</label><input id="aiRole" placeholder="예: 서비스 기획"></div><div class="field"><label>보유 역량 및 경험</label><textarea id="aiSkill" placeholder="경험과 역량을 적어 주세요"></textarea></div><button class="btn black wide" onclick="analyze()">분석하기</button></div><div id="aiOutput"></div></section>
+<section class="screen" id="aiguide"><h1 class="hand">AI 추천 결과</h1><div id="aiGuideContent"></div></section>
+<section class="screen" id="mypage"><h1 class="hand">My Page</h1><div class="box"><div class="row"><div class="avatar">♙</div><div class="grow"><b id="profileName">회원님</b><p class="muted" id="profileRole">프로필을 등록해 주세요</p></div><button class="btn" onclick="show('profile')">편집</button></div></div><div class="grid2"><div class="stat"><b id="savedNum">0</b>관심 공고</div><div class="stat"><b id="applyNum">0</b>지원 내역</div></div><h2>나의 활동</h2><div class="box"><div class="listrow" onclick="show('subscription')">구독권 관리　›</div><div class="listrow" onclick="show('applications')">지원 현황　›</div><div class="listrow" onclick="show('resume')">이력서 관리　›</div><div class="listrow" onclick="show('profile')">회원정보 수정　›</div></div><h2>고객센터</h2><div class="box" id="supportMenu"></div></section>
+<section class="screen" id="profile"><h1 class="hand">My Page > 회원정보 수정</h1><div class="field"><label>이름</label><input id="pName" placeholder="이름"></div><div class="field"><label>이메일</label><input id="pEmail" placeholder="abc@example.com"></div><div class="field"><label>비밀번호</label><input type="password" placeholder="새 비밀번호"></div><div class="field"><label>연락처</label><input placeholder="010-0000-0000"></div><button class="btn black wide" onclick="saveProfile()">변경사항 저장</button></section>
+<section class="screen" id="resume"><h1 class="hand">My Page > 이력서 관리</h1><div class="box"><h2>기본 이력서</h2><div class="field"><label>이력서 제목</label><input id="rTitle" placeholder="나의 이력서"></div><div class="field"><label>학력</label><input id="rEdu" placeholder="학교 / 전공"></div><div class="field"><label>경력 및 활동</label><textarea id="rExp" placeholder="경험을 입력하세요"></textarea></div><div class="field"><label>자격증 및 기술</label><input id="rSkill" placeholder="자격증, 기술"></div><button class="btn black wide" onclick="saveResume()">이력서 저장</button></div></section>
+<section class="screen" id="applications"><h1 class="hand">My Page > 지원 현황</h1><div class="pills"><button class="pill on">전체</button><button class="pill">서류</button><button class="pill">면접</button><button class="pill">합격</button></div><div id="applyList"></div></section>
+<section class="screen" id="subscription"><h1 class="hand">구독권</h1><div class="card"><b>CareerNav Free</b><p class="muted">기본 채용공고 검색 및 관심 공고 저장</p><b>무료</b></div><div class="card"><b>CareerNav Plus</b><p class="muted">AI 직무 분석 및 맞춤 공고 추천</p><b>월 29,000원</b><button class="btn redline" onclick="choosePlan('Plus')">구독하기</button></div><div class="card"><b>CareerNav Pro</b><p class="muted">AI 분석 + 프리미엄 커리어 리포트</p><b>월 49,000원</b><button class="btn redline" onclick="choosePlan('Pro')">구독하기</button></div></section>
+<section class="screen" id="support"><h1 class="hand">My Page > 고객센터</h1><div id="supportRows"></div></section>
+<section class="screen" id="faq"><h1 class="hand">자주 묻는 질문(FAQ)</h1><div class="field"><input id="faqSearch" placeholder="질문 검색" oninput="renderFaq()"></div><div id="faqItems"></div></section>
+<section class="screen" id="notices"><h1 class="hand">공지사항</h1><div id="noticeItems"></div></section>
+<section class="screen" id="events"><h1 class="hand">이벤트 · 혜택</h1><div class="card"><b>CareerNav 신규 회원 이벤트</b><p class="muted">신규 가입 회원 대상 혜택 안내</p></div><div class="card"><b>Plus 구독 체험</b><p class="muted">프리미엄 기능을 경험해 보세요.</p></div></section>
+<section class="screen" id="inquiry"><h1 class="hand">1:1 문의하기</h1><div class="field"><label>문의 유형</label><select id="inqType"><option>계정 관련</option><option>채용공고</option><option>결제 및 구독</option><option>서비스 오류</option><option>기타</option></select></div><div class="field"><label>제목</label><input id="inqTitle"></div><div class="field"><label>문의 내용</label><textarea id="inqBody"></textarea></div><button class="btn black wide" onclick="submitInquiry()">문의하기</button></section>
+<section class="screen" id="history"><h1 class="hand">문의 내역</h1><div id="historyItems"></div></section>
+<section class="screen" id="report"><h1 class="hand">신고하기</h1><div class="field"><label>신고 대상</label><input id="reportTarget"></div><div class="field"><label>신고 유형</label><select id="reportType"><option>허위 채용공고</option><option>부적절한 내용</option><option>기타</option></select></div><div class="field"><label>신고 사유</label><textarea id="reportText"></textarea></div><button class="btn redline wide" onclick="submitReport()">신고 접수</button></section>
+<section class="screen" id="chat"><h1 class="hand">실시간 채팅 상담</h1><div class="muted">상담 가능 시간 평일 10:00~18:00</div><div id="chatLog"><div class="chat">안녕하세요. CareerNav 고객센터입니다. 무엇을 도와드릴까요?</div></div><div class="row"><input id="chatText" class="grow" placeholder="메시지 입력" style="padding:8px;font-size:10px"><button class="btn" onclick="sendChat()">전송</button></div></section>
+<section class="screen" id="alerts"><h1 class="hand">알림</h1><div class="listrow">관심 공고 마감 안내　›</div><div class="listrow">새로운 추천 공고　›</div></section>
+</main>
+<footer class="bottom" id="bottom"><button data-page="jobs" class="active"><b>⌕</b>공고검색</button><button data-page="saved"><b>♡</b>관심공고</button><button data-page="ai"><b>AI</b>직무분석</button><button data-page="companies"><b>▣</b>기업정보</button><button data-page="mypage"><b>♙</b>My Page</button></footer>
+</div>
+<div id="toast" style="display:none;position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:9px 13px;font-size:10px;z-index:20"></div>
+<script>
+const data=[
+{id:1,company:'삼성전자',title:'AI 데이터 분석 신입 채용',type:'신입',loc:'서울',date:'2026.12.05',salary:'회사 내규',desc:'데이터 분석 및 AI 서비스 기획',tags:['AI','데이터','신입']},
+{id:2,company:'카카오',title:'서비스 기획 인턴',type:'인턴',loc:'서울',date:'2026.11.28',salary:'협의',desc:'플랫폼 서비스 운영 및 기획',tags:['기획','플랫폼','인턴']},
+{id:3,company:'네이버',title:'콘텐츠 마케팅 신입',type:'신입',loc:'경기',date:'2026.12.10',salary:'회사 내규',desc:'콘텐츠 전략 및 마케팅 운영',tags:['마케팅','콘텐츠']},
+{id:4,company:'현대오토에버',title:'IT 서비스 운영',type:'신입',loc:'서울',date:'2026.12.01',salary:'회사 내규',desc:'IT 플랫폼 서비스 운영 및 개선',tags:['IT','운영']},
+{id:5,company:'토스',title:'사업 기획 인턴',type:'인턴',loc:'서울',date:'2026.11.25',salary:'협의',desc:'신규 사업 리서치 및 전략 수립',tags:['사업기획','리서치']}
+];
+let saved=JSON.parse(localStorage.cnSaved||'[]'),applied=JSON.parse(localStorage.cnApplied||'[]'),inquiries=JSON.parse(localStorage.cnInquiries||'[]'),filter='전체',stack=[];
+const $=id=>document.getElementById(id);
+function toast(s){let t=$('toast');t.textContent=s;t.style.display='block';setTimeout(()=>t.style.display='none',1800)}
+function show(id,push=true){if(push){let cur=document.querySelector('.screen.active')?.id;if(cur&&cur!==id)stack.push(cur)}document.querySelectorAll('.screen').forEach(x=>x.classList.toggle('active',x.id===id));$('tabs').style.display=['login','signup','welcome'].includes(id)?'none':'flex';$('bottom').style.display=['login','signup','welcome'].includes(id)?'none':'flex';$('backBtn').style.visibility=['login','jobs'].includes(id)?'hidden':'visible';document.querySelectorAll('[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===id));if(id==='saved')renderSaved();if(id==='mypage')updateMy();if(id==='applications')renderApplied();if(id==='history')renderHistory();if(id==='faq')renderFaq();window.scrollTo(0,0)}
+function back(){show(stack.pop()||'jobs',false)}
+document.querySelectorAll('[data-page]').forEach(b=>b.onclick=()=>show(b.dataset.page));
+function card(j){return `<div class="card"><div class="cardhead"><b>${j.company}</b><button class="heart ${saved.includes(j.id)?'on':''}" onclick="toggleSave(${j.id})">${saved.includes(j.id)?'♥':'♡'}</button></div><div class="jobtitle" onclick="detail(${j.id})">${j.title}</div><div class="jobmeta">${j.loc} · ${j.type} · 마감 ${j.date}</div><div class="pills">${j.tags.map(t=>`<span class="pill">${t}</span>`).join('')}</div><div class="row between"><button class="btn" onclick="detail(${j.id})">상세보기</button><span class="tiny">조회 1,527</span></div></div>`}
+function renderJobs(){let q=($('search')?.value||'').toLowerCase();let arr=data.filter(j=>(filter==='전체'||j.type===filter||j.loc===filter||j.tags.includes(filter))&&(j.company+j.title+j.tags.join('')).toLowerCase().includes(q));$('jobList').innerHTML=arr.map(card).join('')||'<p class="muted">검색 결과가 없습니다.</p>';$('jobCount').textContent=`채용공고 ${arr.length}건`}
+function setFilter(v,b){filter=v;document.querySelectorAll('#jobFilters .pill').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderJobs()}
+function detail(id){let j=data.find(x=>x.id===id);$('detailContent').innerHTML=`<div class="box"><b>${j.company}</b><h2>${j.title}</h2><p class="muted">${j.loc} · ${j.type} · 마감 ${j.date}</p><div class="line"></div><div class="grid2"><div><span class="muted">고용 형태</span><p>${j.type}</p></div><div><span class="muted">급여</span><p>${j.salary}</p></div></div><h2>모집 내용</h2><p class="muted">${j.desc}</p><h2>자격 요건</h2><p class="muted">관련 분야에 관심이 있고 협업과 커뮤니케이션이 가능한 분</p><h2>기업 정보</h2><button class="btn" onclick="companyDetail('${j.company}')">기업 정보 보기</button><div class="row" style="margin-top:12px"><button class="btn grow" onclick="toggleSave(${id})">♡ 관심공고</button><button class="btn black grow" onclick="apply(${id})">지원하기</button></div></div>`;show('jobdetail')}
+function toggleSave(id){saved=saved.includes(id)?saved.filter(x=>x!==id):[...saved,id];localStorage.cnSaved=JSON.stringify(saved);renderJobs();if($('saved').classList.contains('active'))renderSaved();updateMy();toast('관심 공고가 업데이트되었습니다.')}
+function renderSaved(){$('savedList').innerHTML=data.filter(j=>saved.includes(j.id)).map(card).join('')||'<p class="muted">관심 공고가 없습니다.</p>'}
+function apply(id){if(!applied.includes(id))applied.push(id);localStorage.cnApplied=JSON.stringify(applied);toast('지원 현황에 저장했습니다. 실제 기업 접수는 아닙니다.');updateMy()}
+function renderApplied(){$('applyList').innerHTML=data.filter(j=>applied.includes(j.id)).map(j=>`<div class="card"><b>${j.title}</b><p class="muted">${j.company} · 지원 기록</p><span class="pill">지원 완료(데모)</span></div>`).join('')||'<p class="muted">지원 내역이 없습니다.</p>'}
+function renderCompanies(){let q=($('companySearch')?.value||'').toLowerCase();$('companyList').innerHTML=[...new Set(data.map(x=>x.company))].filter(x=>x.toLowerCase().includes(q)).map(x=>`<div class="listrow" onclick="companyDetail('${x}')"><b>${x}</b><span>기업 정보 보기　›</span></div>`).join('')}
+function companyDetail(name){$('companyContent').innerHTML=`<div class="box"><div class="thumb">▣</div><h2>${name}</h2><p class="muted">기업 소개 및 채용 정보</p><div class="grid3"><div class="stat"><b>4.2</b>평점</div><div class="stat"><b>1,527</b>조회</div><div class="stat"><b>${data.filter(j=>j.company===name).length}</b>공고</div></div><h2>기업 소개</h2><p class="muted">${name}의 기업 정보와 채용 소식을 확인해 보세요.</p><h2>채용 공고</h2>${data.filter(j=>j.company===name).map(j=>`<div class="listrow" onclick="detail(${j.id})">${j.title}　›</div>`).join('')}</div>`;show('companydetail')}
+function analyze(){let role=$('aiRole').value||'관심 직무',skill=$('aiSkill').value||'입력한 경험';$('aiOutput').innerHTML=`<div class="box"><h2>${role} 직무 분석</h2><p class="muted">${skill}</p><div class="row between"><b>직무 적합도(예시)</b><b>85%</b></div><div class="bar"><span style="width:85%"></span></div><h2>추천 역량</h2><p class="muted">문제 해결 · 데이터 활용 · 커뮤니케이션 · 기획력</p><button class="btn blue wide" onclick="makeGuide()">추천 결과 자세히 보기</button></div>`}
+function makeGuide(){$('aiGuideContent').innerHTML=`<div class="box"><h2>추천 직무</h2><div class="card">서비스 기획 <span class="blue">추천</span><p class="muted">사용자 문제를 정의하고 서비스 개선 방향을 설계하는 직무</p></div><div class="card">데이터 분석<p class="muted">데이터 기반으로 문제와 인사이트를 도출하는 직무</p></div><h2>준비하면 좋은 역량</h2><p class="muted">Excel · SQL · 기획서 작성 · 프로젝트 경험</p></div>`;show('aiguide')}
+function updateMy(){$('savedNum').textContent=saved.length;$('applyNum').textContent=applied.length;$('profileName').textContent=localStorage.cnName||'회원님';$('profileRole').textContent=localStorage.cnRole||'희망 직무를 등록해 주세요'}
+function saveProfile(){localStorage.cnName=$('pName').value||'회원님';localStorage.cnRole='CareerNav 회원';updateMy();toast('회원정보를 저장했습니다.');show('mypage')}
+function saveResume(){localStorage.cnResume=JSON.stringify({title:$('rTitle').value,edu:$('rEdu').value,exp:$('rExp').value,skill:$('rSkill').value});toast('이력서를 저장했습니다.')}
+const menu=[['♧','공지사항','notices'],['☏','1:1 문의하기','inquiry'],['▤','문의 내역','history'],['ⓘ','자주 묻는 질문(FAQ)','faq'],['♙','이벤트 · 혜택','events'],['△','신고하기','report'],['☏','실시간 채팅 상담','chat'],['♢','서비스 이용약관','faq'],['♙','개인정보 처리방침','faq']];
+function menuHTML(){return menu.map(x=>`<div class="listrow" onclick="show('${x[2]}')"><span>${x[0]}　${x[1]}</span><span>›</span></div>`).join('')}
+$('supportMenu').innerHTML=menuHTML();$('supportRows').innerHTML=menuHTML();
+const faqs=[['회원가입은 어떻게 하나요?','로그인 화면에서 회원가입을 선택하고 필수 정보를 입력해 주세요.'],['관심 공고는 어디서 확인하나요?','상단 관심공고 메뉴 또는 My Page에서 확인할 수 있습니다.'],['구독을 해지하고 싶어요.','구독권 관리 메뉴에서 현재 이용 중인 상품을 확인해 주세요.'],['이력서는 어떻게 저장하나요?','My Page의 이력서 관리에서 정보를 입력하고 저장 버튼을 눌러 주세요.']];
+function renderFaq(){let q=($('faqSearch')?.value||'').toLowerCase();$('faqItems').innerHTML=faqs.filter(x=>x.join('').toLowerCase().includes(q)).map(x=>`<details class="card"><summary>${x[0]}</summary><p class="muted">${x[1]}</p></details>`).join('')}
+$('noticeItems').innerHTML=[['[공지] CareerNav 서비스 안내','2026.11.20'],['[안내] 채용공고 정보 업데이트','2026.11.15'],['[공지] 개인정보 처리방침 변경','2026.11.01']].map(x=>`<div class="listrow"><span>${x[0]}<small class="muted" style="display:block">${x[1]}</small></span>›</div>`).join('');
+function submitInquiry(){if(!$('inqTitle').value.trim()||!$('inqBody').value.trim()){toast('제목과 내용을 입력해 주세요.');return}inquiries.unshift({title:$('inqTitle').value,body:$('inqBody').value,type:$('inqType').value,date:new Date().toLocaleDateString('ko-KR')});localStorage.cnInquiries=JSON.stringify(inquiries);toast('문의가 접수되었습니다.');show('history')}
+function renderHistory(){$('historyItems').innerHTML=inquiries.map(x=>`<div class="card"><b>${x.title}</b><p class="muted">${x.type} · ${x.date}</p><p class="tiny">${x.body}</p><span class="pill">접수</span></div>`).join('')||'<p class="muted">문의 내역이 없습니다.</p>'}
+function submitReport(){if(!$('reportText').value.trim()){toast('신고 사유를 입력해 주세요.');return}toast('신고 내용이 기록되었습니다. 실제 서버로 전송되지는 않습니다.')}
+function sendChat(){let v=$('chatText').value.trim();if(!v)return;$('chatLog').innerHTML+=`<div class="chat me">${v}</div><div class="chat">문의 내용을 확인했습니다. 필요한 경우 1:1 문의를 이용해 주세요.</div>`;$('chatText').value=''}
+function choosePlan(p){toast(p+' 구독 선택: 실제 결제는 연결되지 않았습니다.')}
+function addPills(id,arr){$(id).innerHTML=arr.map(x=>`<button class="pill" onclick="this.classList.toggle('on')">${x}</button>`).join('')}
+$('signupFields').innerHTML=[['아이디','아이디 입력'],['비밀번호','비밀번호 입력'],['비밀번호 확인','비밀번호 재입력'],['이름','이름 입력'],['이메일','이메일 입력'],['연락처','연락처 입력']].map((x,i)=>`<div class="field"><label>${x[0]} <b class="red">*</b></label><input ${i===1||i===2?'type="password"':''} placeholder="${x[1]}"></div>`).join('');
+addPills('interestJobs',['기획','마케팅','개발','디자인','데이터 분석','영업','인사','물류']);addPills('regions',['서울','경기','인천','전국']);addPills('types',['정규직','계약직','인턴','아르바이트']);
+renderJobs();renderCompanies();updateMy();show('jobs',false);
+</script></body></html>
